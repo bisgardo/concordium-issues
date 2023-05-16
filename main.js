@@ -1,24 +1,12 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import {detectConcordiumProvider} from "@concordium/browser-wallet-api-helpers";
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+async function run() {
+    const api = await detectConcordiumProvider(1000)
+    const account = await api.connect();
+    console.log('connected to account', account);
+    const client = api.getGrpcClient();
+    const status = await client.getConsensusStatus();
+    console.log('status:', status);
+}
 
-setupCounter(document.querySelector('#counter'))
+run().catch(console.error);

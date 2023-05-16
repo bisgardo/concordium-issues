@@ -8,6 +8,9 @@
     "build": "vite build",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "@concordium/browser-wallet-api-helpers": "^2.5.0"
+  },
   "devDependencies": {
     "vite": "^4.3.2"
   }
