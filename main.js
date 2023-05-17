@@ -1,12 +1,25 @@
 import {detectConcordiumProvider} from "@concordium/browser-wallet-api-helpers";
 
-async function run() {
-    const api = await detectConcordiumProvider(1000)
-    const account = await api.connect();
-    console.log('connected to account', account);
-    const client = api.getGrpcClient();
-    const status = await client.getConsensusStatus();
-    console.log('status:', status);
+const buttonElement = document.getElementById("button");
+const outputElement = document.getElementById("output");
+
+function log(msg) {
+    outputElement.innerText += `${msg}\n`;
 }
 
-run().catch(console.error);
+detectConcordiumProvider(1000)
+    .then(api => {
+        const client = api.getGrpcClient();
+        buttonElement.addEventListener("click", () => {
+            client.getConsensusStatus()
+                .then(status => {
+                    log(JSON.stringify(status, (_, v) => typeof v === 'bigint' ? v.toString() : v));
+                })
+                .catch(e => {
+                    log(`error fetching consensus status: ${e}`);
+                })
+        });
+    })
+    .catch(e => {
+        log(`error loading wallet API: ${e}`);
+    });
