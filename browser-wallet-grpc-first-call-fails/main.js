@@ -1,10 +1,10 @@
 import {detectConcordiumProvider} from "@concordium/browser-wallet-api-helpers";
 
 const buttonElement = document.getElementById("button");
-const outputElement = document.getElementById("output");
+const logElement = document.getElementById("log");
 
 function log(msg) {
-    outputElement.innerText += `${msg}\n`;
+    logElement.innerText += `${msg}\n`;
 }
 
 detectConcordiumProvider(1000)
